@@ -1,12 +1,13 @@
+import lombok.extern.log4j.Log4j2;
+
 /**
  * @author XiongYiGe
  * @date 2022/5/20
  * @description
  */
+@Log4j2
 public class UserService {
     public void systemOut(){
-        System.out.println("调用UserService方法开始");
-        System.out.println("Hello Spring!");
-        System.out.println("调用UserService方法结束");
+        log.info("\"Hello Spring!\"");
     }
 }
