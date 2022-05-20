@@ -1,4 +1,4 @@
-package com.tegasus9.spring;
+package com.tegasus9.spring.factory.config;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -11,5 +11,5 @@ import lombok.Data;
 @Data
 @AllArgsConstructor
 public class BeanDefinition {
-    private Object bean;
+    private Class<?> bean;
 }
