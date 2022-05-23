@@ -15,7 +15,7 @@ public class CglibSubclassingInstantiationStrategy implements InstantiationStrat
     @Override
     public Object instantiate(BeanDefinition beanDefinition, String beanName, Constructor<?> constructor, Object[] args) {
         Enhancer enhancer = new Enhancer();
-        enhancer.setSuperclass(beanDefinition.getBean());
+        enhancer.setSuperclass(beanDefinition.getBeanClass());
         enhancer.setCallback(NoOp.INSTANCE);
         if (constructor==null){
             return enhancer.create();

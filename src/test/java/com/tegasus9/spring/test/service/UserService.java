@@ -12,14 +12,15 @@ import lombok.extern.log4j.Log4j2;
 @Log4j2
 public class UserService {
 
+    private UserDao userDao;
     @Getter
     @Setter
-    private String name;
-    public void systemOut(){
-        log.info("\"Hello Spring!\"");
+    private String uId;
+    public void queryUserInfo(){
+        log.info("查询用户名称：uid:{},名称：{}",uId,userDao.queryUserName(uId));
     }
 
-    public UserService(String name){
-        this.name= name;
+    public UserService(String uId){
+        this.uId = uId;
     }
 }

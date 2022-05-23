@@ -1,15 +1,24 @@
 package com.tegasus9.spring.factory.config;
 
-import lombok.AllArgsConstructor;
+import com.tegasus9.spring.PropertyValues;
 import lombok.Data;
 
 /**
  * @author XiongYiGe
  * @date 2022/5/20
- * @description
+ * @description Bean定义
  */
 @Data
-@AllArgsConstructor
 public class BeanDefinition {
-    private Class<?> bean;
+    private Class<?> beanClass;
+    private PropertyValues propertyValues;
+
+    public BeanDefinition(Class<?> clazz){
+        this.beanClass = clazz;
+        this.propertyValues = new PropertyValues();
+    }
+    public BeanDefinition(Class<?> clazz,PropertyValues propertyValues){
+        this.beanClass = clazz;
+        this.propertyValues = propertyValues ==null?new PropertyValues():propertyValues;
+    }
 }
