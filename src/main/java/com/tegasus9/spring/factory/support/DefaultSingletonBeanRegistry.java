@@ -4,7 +4,6 @@ import com.tegasus9.spring.factory.config.SingletonBeanRegistry;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * @author XiongYiGe
@@ -16,7 +15,7 @@ public class DefaultSingletonBeanRegistry implements SingletonBeanRegistry {
 
     @Override
     public Object getSingleton(String name) {
-        return null;
+        return singletonMap.get(name);
     }
 
     protected void addSingletonToMap(String name,Object object){
