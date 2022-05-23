@@ -11,4 +11,6 @@ import com.tegasus9.spring.BeanRegisterFailException;
 public interface BeanFactory {
 
     Object getBean(String name) throws BeanNotFoundException, BeanRegisterFailException;
+
+    Object getBean(String name,Object... args);
 }

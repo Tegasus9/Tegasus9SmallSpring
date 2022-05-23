@@ -9,5 +9,5 @@ import com.tegasus9.spring.factory.config.BeanDefinition;
  */
 public interface BeanDefinitionRegistry {
 
-    void registryBeanDefinition(String name, BeanDefinition beanDefinition);
+    void registerBeanDefinition(String name, BeanDefinition beanDefinition);
 }
