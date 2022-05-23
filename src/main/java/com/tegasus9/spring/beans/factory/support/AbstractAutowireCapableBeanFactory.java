@@ -1,12 +1,12 @@
-package com.tegasus9.spring.factory.support;
+package com.tegasus9.spring.beans.factory.support;
 
 import cn.hutool.core.bean.BeanUtil;
 import com.tegasus9.spring.BeanApplyPropertyValueFailException;
 import com.tegasus9.spring.BeanRegisterFailException;
 import com.tegasus9.spring.PropertyValue;
 import com.tegasus9.spring.PropertyValues;
-import com.tegasus9.spring.factory.config.BeanDefinition;
-import com.tegasus9.spring.factory.config.BeanReference;
+import com.tegasus9.spring.beans.factory.config.BeanDefinition;
+import com.tegasus9.spring.beans.factory.config.BeanReference;
 
 import java.lang.reflect.Constructor;
 

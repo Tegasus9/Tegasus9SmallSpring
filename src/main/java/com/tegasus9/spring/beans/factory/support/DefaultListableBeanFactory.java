@@ -1,7 +1,7 @@
-package com.tegasus9.spring.factory.support;
+package com.tegasus9.spring.beans.factory.support;
 
 import com.tegasus9.spring.BeanNotFoundException;
-import com.tegasus9.spring.factory.config.BeanDefinition;
+import com.tegasus9.spring.beans.factory.config.BeanDefinition;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -12,7 +12,7 @@ import java.util.Map;
  * @description
  */
 public class DefaultListableBeanFactory extends AbstractAutowireCapableBeanFactory implements BeanDefinitionRegistry{
-    private Map<String,BeanDefinition> beanDefinitionMap = new HashMap<>();
+    private Map<String, BeanDefinition> beanDefinitionMap = new HashMap<>();
 
     @Override
     protected BeanDefinition getBeanDefinition(String name) throws BeanNotFoundException {

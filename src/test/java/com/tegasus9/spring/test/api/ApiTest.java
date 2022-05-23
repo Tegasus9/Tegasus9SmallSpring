@@ -2,9 +2,9 @@ package com.tegasus9.spring.test.api;
 
 import com.tegasus9.spring.PropertyValue;
 import com.tegasus9.spring.PropertyValues;
-import com.tegasus9.spring.factory.config.BeanDefinition;
-import com.tegasus9.spring.factory.config.BeanReference;
-import com.tegasus9.spring.factory.support.DefaultListableBeanFactory;
+import com.tegasus9.spring.beans.factory.config.BeanDefinition;
+import com.tegasus9.spring.beans.factory.config.BeanReference;
+import com.tegasus9.spring.beans.factory.support.DefaultListableBeanFactory;
 import com.tegasus9.spring.test.service.UserDao;
 import com.tegasus9.spring.test.service.UserService;
 import org.junit.Test;

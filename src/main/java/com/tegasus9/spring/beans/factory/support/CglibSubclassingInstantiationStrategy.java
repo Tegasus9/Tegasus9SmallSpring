@@ -1,6 +1,6 @@
-package com.tegasus9.spring.factory.support;
+package com.tegasus9.spring.beans.factory.support;
 
-import com.tegasus9.spring.factory.config.BeanDefinition;
+import com.tegasus9.spring.beans.factory.config.BeanDefinition;
 import net.sf.cglib.proxy.Enhancer;
 import net.sf.cglib.proxy.NoOp;
 

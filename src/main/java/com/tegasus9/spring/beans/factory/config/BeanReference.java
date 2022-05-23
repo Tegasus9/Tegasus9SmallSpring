@@ -1,4 +1,4 @@
-package com.tegasus9.spring.factory.config;
+package com.tegasus9.spring.beans.factory.config;
 
 /**
  * @author XiongYiGe

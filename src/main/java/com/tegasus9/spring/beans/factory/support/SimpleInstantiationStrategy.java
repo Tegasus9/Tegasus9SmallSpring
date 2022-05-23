@@ -1,7 +1,7 @@
-package com.tegasus9.spring.factory.support;
+package com.tegasus9.spring.beans.factory.support;
 
 import com.tegasus9.spring.BeanRegisterFailException;
-import com.tegasus9.spring.factory.config.BeanDefinition;
+import com.tegasus9.spring.beans.factory.config.BeanDefinition;
 import lombok.extern.log4j.Log4j2;
 
 import java.lang.reflect.Constructor;

@@ -1,6 +1,5 @@
 package com.tegasus9.spring.test;
 
-import com.tegasus9.spring.factory.config.BeanDefinition;
 import lombok.extern.log4j.Log4j2;
 import org.junit.Test;
 

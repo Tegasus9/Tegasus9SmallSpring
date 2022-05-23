@@ -1,4 +1,4 @@
-package com.tegasus9.spring.factory;
+package com.tegasus9.spring.beans.factory;
 
 import com.tegasus9.spring.BeanNotFoundException;
 import com.tegasus9.spring.BeanRegisterFailException;

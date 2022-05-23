@@ -1,6 +1,6 @@
-package com.tegasus9.spring.factory.support;
+package com.tegasus9.spring.beans.factory.support;
 
-import com.tegasus9.spring.factory.config.SingletonBeanRegistry;
+import com.tegasus9.spring.beans.factory.config.SingletonBeanRegistry;
 
 import java.util.HashMap;
 import java.util.Map;
