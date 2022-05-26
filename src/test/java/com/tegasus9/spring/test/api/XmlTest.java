@@ -1,8 +1,8 @@
 package com.tegasus9.spring.test.api;
 
 import cn.hutool.core.io.IoUtil;
-import com.tegasus9.spring.PropertyValue;
-import com.tegasus9.spring.PropertyValues;
+import com.tegasus9.spring.beans.PropertyValue;
+import com.tegasus9.spring.beans.PropertyValues;
 import com.tegasus9.spring.beans.factory.config.BeanDefinition;
 import com.tegasus9.spring.beans.factory.config.BeanReference;
 import com.tegasus9.spring.beans.factory.support.DefaultListableBeanFactory;

@@ -2,9 +2,9 @@ package com.tegasus9.spring.beans.factory.xml;
 
 import cn.hutool.core.text.CharSequenceUtil;
 import cn.hutool.core.util.XmlUtil;
-import com.tegasus9.spring.BeanNotFoundException;
-import com.tegasus9.spring.BeanRegisterFailException;
-import com.tegasus9.spring.PropertyValue;
+import com.tegasus9.spring.beans.BeanNotFoundException;
+import com.tegasus9.spring.beans.BeanRegisterFailException;
+import com.tegasus9.spring.beans.PropertyValue;
 import com.tegasus9.spring.beans.factory.config.BeanDefinition;
 import com.tegasus9.spring.beans.factory.config.BeanReference;
 import com.tegasus9.spring.beans.factory.support.AbstractBeanDefinitionReader;
@@ -48,6 +48,13 @@ public class XmlBeanDefinitionReader extends AbstractBeanDefinitionReader {
         ResourceLoader resourceLoader = getResourceLoader();
         Resource resource = resourceLoader.getResource(location);
         this.loadBeanDefinitions(resource);
+    }
+
+    @Override
+    public void loadBeanDefinitions(String... locations)  {
+        for (String location : locations) {
+            loadBeanDefinitions(location);
+        }
     }
 
     protected void doLoadBeanDefinitions(InputStream inputStream) throws ClassNotFoundException {

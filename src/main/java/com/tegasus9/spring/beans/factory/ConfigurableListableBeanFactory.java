@@ -10,7 +10,15 @@ import com.tegasus9.spring.beans.factory.config.ConfigurableBeanFactory;
  * @description
  */
 public interface ConfigurableListableBeanFactory extends ListableBeanFactory, AutowireCapableBeanFactory, ConfigurableBeanFactory {
+    /**
+     * 获取beanDefinitions
+     * @param beanName
+     * @return
+     */
     BeanDefinition getBeanDefinition(String beanName);
 
-
+    /**
+     * 预处理初始化单例
+     */
+    void preInstantiateSingletons();
 }

@@ -1,4 +1,4 @@
-package com.tegasus9.spring;
+package com.tegasus9.spring.beans;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

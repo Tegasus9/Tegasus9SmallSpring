@@ -1,7 +1,6 @@
 package com.tegasus9.spring.test.service;
 
-import lombok.Getter;
-import lombok.Setter;
+import lombok.Data;
 import lombok.extern.log4j.Log4j2;
 
 /**
@@ -10,14 +9,15 @@ import lombok.extern.log4j.Log4j2;
  * @description
  */
 @Log4j2
+@Data
 public class UserService {
 
-    private UserDao userDao;
-    @Getter
-    @Setter
     private String uId;
-    public String queryUserInfo(){
-        log.info("查询用户名称：uid:{},名称：{}",uId,userDao.queryUserName(uId));
-        return "string";
+    private String company;
+    private String location;
+    private UserDao userDao;
+
+    public String queryUserInfo() {
+        return userDao.queryUserName(uId) + "," + company + "," + location;
     }
 }

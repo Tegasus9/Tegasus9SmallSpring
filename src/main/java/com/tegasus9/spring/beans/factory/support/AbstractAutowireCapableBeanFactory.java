@@ -1,11 +1,13 @@
 package com.tegasus9.spring.beans.factory.support;
 
 import cn.hutool.core.bean.BeanUtil;
-import com.tegasus9.spring.BeanApplyPropertyValueFailException;
-import com.tegasus9.spring.BeanRegisterFailException;
-import com.tegasus9.spring.PropertyValue;
-import com.tegasus9.spring.PropertyValues;
+import com.tegasus9.spring.beans.BeanApplyPropertyValueFailException;
+import com.tegasus9.spring.beans.BeanRegisterFailException;
+import com.tegasus9.spring.beans.PropertyValue;
+import com.tegasus9.spring.beans.PropertyValues;
+import com.tegasus9.spring.beans.factory.config.AutowireCapableBeanFactory;
 import com.tegasus9.spring.beans.factory.config.BeanDefinition;
+import com.tegasus9.spring.beans.factory.config.BeanPostProcessor;
 import com.tegasus9.spring.beans.factory.config.BeanReference;
 
 import java.lang.reflect.Constructor;
@@ -15,23 +17,61 @@ import java.lang.reflect.Constructor;
  * @date 2022/5/23
  * @description
  */
-public abstract class AbstractAutowireCapableBeanFactory extends AbstractBeanFactory{
+public abstract class AbstractAutowireCapableBeanFactory extends AbstractBeanFactory implements AutowireCapableBeanFactory {
 
     private InstantiationStrategy instantiationStrategy = new CglibSubclassingInstantiationStrategy();
 
     @Override
-    protected Object createBean(String name, BeanDefinition beanDefinition, Object... args) throws BeanRegisterFailException {
+    protected Object createBean(String beanName, BeanDefinition beanDefinition, Object... args) throws BeanRegisterFailException {
         Object instance;
         try {
-            instance = createBeanInstance(beanDefinition,name,args);
-
+            instance = createBeanInstance(beanDefinition,beanName,args);
             //给bean填充属性值
-            applyPropertyValue(name,instance,beanDefinition);
+            applyPropertyValue(beanName,instance,beanDefinition);
+            //给bean执行初始化方法和BeanPostProcessor的前置和后置方法
+            instance =initialBean(beanName,instance,beanDefinition);
+
         } catch (Exception e) {
-            throw new BeanRegisterFailException(name + "bean实例化失败！",e);
+            throw new BeanRegisterFailException(beanName + "bean实例化失败！",e);
         }
-        addSingletonToMap(name, instance);
+        addSingletonToMap(beanName, instance);
         return instance;
+    }
+
+    private Object initialBean(String beanName, Object bean, BeanDefinition beanDefinition) {
+        //处理Bean前置
+        Object wrappedBean = applyBeanPostProcessorsBeforeInitialization(bean, beanName);
+        //invokeInitMethods
+        invokeInitMethods(beanName,wrappedBean,beanDefinition);
+        //处理后置
+        return  applyBeanPostProcessorsAfterInitialization(wrappedBean, beanName);
+    }
+
+    public Object applyBeanPostProcessorsAfterInitialization(Object bean, String beanName) {
+        Object result = bean;
+        for (BeanPostProcessor beanPostProcessor : getBeanPostProcessors()) {
+            Object current = beanPostProcessor.postProcessBeforeInitialization(result, beanName);
+            if (current==null){
+                return result;
+            }
+            result = current;
+        }
+
+        return result;
+    }
+
+    private void invokeInitMethods(String beanName, Object wrappedBean, BeanDefinition beanDefinition) {
+        
+    }
+
+    public Object applyBeanPostProcessorsBeforeInitialization(Object bean, String beanName) {
+        Object result = bean;
+        for (BeanPostProcessor processor : getBeanPostProcessors()) {
+            Object current = processor.postProcessAfterInitialization(result, beanName);
+            if (null == current) return result;
+            result = current;
+        }
+        return result;
     }
 
     private void applyPropertyValue(String beanName, Object instance, BeanDefinition beanDefinition) {

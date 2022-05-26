@@ -1,6 +1,6 @@
 package com.tegasus9.spring.beans.factory.support;
 
-import com.tegasus9.spring.BeanRegisterFailException;
+import com.tegasus9.spring.beans.BeanRegisterFailException;
 import com.tegasus9.spring.beans.factory.config.BeanDefinition;
 import lombok.extern.log4j.Log4j2;
 

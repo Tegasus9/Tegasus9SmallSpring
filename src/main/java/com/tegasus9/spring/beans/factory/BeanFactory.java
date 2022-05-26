@@ -1,7 +1,7 @@
 package com.tegasus9.spring.beans.factory;
 
-import com.tegasus9.spring.BeanNotFoundException;
-import com.tegasus9.spring.BeanRegisterFailException;
+import com.tegasus9.spring.beans.BeanNotFoundException;
+import com.tegasus9.spring.beans.BeanRegisterFailException;
 
 /**
  * @author XiongYiGe

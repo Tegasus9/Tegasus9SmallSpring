@@ -1,6 +1,6 @@
 package com.tegasus9.spring.beans.factory.config;
 
-import com.tegasus9.spring.PropertyValues;
+import com.tegasus9.spring.beans.PropertyValues;
 import lombok.Data;
 
 /**

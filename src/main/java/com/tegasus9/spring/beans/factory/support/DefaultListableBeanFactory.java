@@ -1,6 +1,6 @@
 package com.tegasus9.spring.beans.factory.support;
 
-import com.tegasus9.spring.BeanNotFoundException;
+import com.tegasus9.spring.beans.BeanNotFoundException;
 import com.tegasus9.spring.beans.factory.ConfigurableListableBeanFactory;
 import com.tegasus9.spring.beans.factory.config.BeanDefinition;
 
@@ -24,6 +24,10 @@ public class DefaultListableBeanFactory extends AbstractAutowireCapableBeanFacto
         return beanDefinition;
     }
 
+    @Override
+    public void preInstantiateSingletons() {
+        beanDefinitionMap.keySet().forEach(this::getBean);
+    }
 
 
     @Override
