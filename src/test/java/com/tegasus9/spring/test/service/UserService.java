@@ -16,11 +16,8 @@ public class UserService {
     @Getter
     @Setter
     private String uId;
-    public void queryUserInfo(){
+    public String queryUserInfo(){
         log.info("查询用户名称：uid:{},名称：{}",uId,userDao.queryUserName(uId));
-    }
-
-    public UserService(String uId){
-        this.uId = uId;
+        return "string";
     }
 }

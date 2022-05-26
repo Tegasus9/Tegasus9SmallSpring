@@ -4,9 +4,7 @@ import cn.hutool.core.lang.Assert;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.net.HttpURLConnection;
-import java.net.URL;
-import java.net.URLConnection;
+import java.net.*;
 
 /**
  * @author XiongYiGe
@@ -21,7 +19,8 @@ public class UrlResource implements Resource{
     }
     @Override
     public InputStream getInputStream() throws IOException {
-        URLConnection urlConnection = this.url.openConnection();
+        Proxy proxy = new Proxy(Proxy.Type.HTTP, new InetSocketAddress("10.9.11.20", 7890));
+        URLConnection urlConnection = this.url.openConnection(proxy);
 
         try {
             return urlConnection.getInputStream();
