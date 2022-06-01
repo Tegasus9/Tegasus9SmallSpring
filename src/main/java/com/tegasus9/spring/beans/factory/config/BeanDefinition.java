@@ -13,6 +13,10 @@ public class BeanDefinition {
     private Class<?> beanClass;
     private PropertyValues propertyValues;
 
+    private String initMethodName;
+
+    private String destroyMethodName;
+
     public BeanDefinition(Class<?> clazz){
         this.beanClass = clazz;
         this.propertyValues = new PropertyValues();

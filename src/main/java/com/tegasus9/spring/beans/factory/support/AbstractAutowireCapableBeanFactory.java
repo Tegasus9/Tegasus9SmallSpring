@@ -1,16 +1,21 @@
 package com.tegasus9.spring.beans.factory.support;
 
+import cn.hutool.core.bean.BeanException;
 import cn.hutool.core.bean.BeanUtil;
 import com.tegasus9.spring.beans.BeanApplyPropertyValueFailException;
 import com.tegasus9.spring.beans.BeanRegisterFailException;
 import com.tegasus9.spring.beans.PropertyValue;
 import com.tegasus9.spring.beans.PropertyValues;
+import com.tegasus9.spring.beans.factory.DisposableBean;
+import com.tegasus9.spring.beans.factory.InitializingBean;
 import com.tegasus9.spring.beans.factory.config.AutowireCapableBeanFactory;
 import com.tegasus9.spring.beans.factory.config.BeanDefinition;
 import com.tegasus9.spring.beans.factory.config.BeanPostProcessor;
 import com.tegasus9.spring.beans.factory.config.BeanReference;
+import org.apache.commons.lang3.StringUtils;
 
 import java.lang.reflect.Constructor;
+import java.lang.reflect.Method;
 
 /**
  * @author XiongYiGe
@@ -23,19 +28,30 @@ public abstract class AbstractAutowireCapableBeanFactory extends AbstractBeanFac
 
     @Override
     protected Object createBean(String beanName, BeanDefinition beanDefinition, Object... args) throws BeanRegisterFailException {
-        Object instance;
+        Object bean;
         try {
-            instance = createBeanInstance(beanDefinition,beanName,args);
+            bean = createBeanInstance(beanDefinition,beanName,args);
             //给bean填充属性值
-            applyPropertyValue(beanName,instance,beanDefinition);
+            applyPropertyValue(beanName,bean,beanDefinition);
             //给bean执行初始化方法和BeanPostProcessor的前置和后置方法
-            instance =initialBean(beanName,instance,beanDefinition);
+            bean =initialBean(beanName,bean,beanDefinition);
 
         } catch (Exception e) {
             throw new BeanRegisterFailException(beanName + "bean实例化失败！",e);
         }
-        addSingletonToMap(beanName, instance);
-        return instance;
+
+        // 注册实现了 DisposableBean 接口的 Bean 对象
+        registerDisposableBeanIfNecessary(beanName, bean, beanDefinition);
+
+
+        addSingletonToMap(beanName, bean);
+        return bean;
+    }
+
+    protected void registerDisposableBeanIfNecessary(String beanName,Object bean,BeanDefinition beanDefinition){
+        if (bean instanceof DisposableBean || StringUtils.isNotBlank(beanDefinition.getDestroyMethodName())){
+            registerDisposableBean(beanName,new DisposableBeanAdapter(bean,beanName,beanDefinition));
+        }
     }
 
     private Object initialBean(String beanName, Object bean, BeanDefinition beanDefinition) {
@@ -60,8 +76,20 @@ public abstract class AbstractAutowireCapableBeanFactory extends AbstractBeanFac
         return result;
     }
 
-    private void invokeInitMethods(String beanName, Object wrappedBean, BeanDefinition beanDefinition) {
-        
+    private void invokeInitMethods(String beanName, Object bean, BeanDefinition beanDefinition) throws BeanException {
+        if (bean instanceof InitializingBean){
+            ((InitializingBean) bean).afterPropertiesSet();
+        }
+
+        String initMethodName = beanDefinition.getInitMethodName();
+        if (StringUtils.isNotBlank(initMethodName)&&!(bean instanceof InitializingBean)){
+            try {
+                Method method = beanDefinition.getBeanClass().getMethod(initMethodName);
+                method.invoke(bean);
+            } catch (Exception e){
+                throw new BeanException("Could not find an init method named '" + initMethodName + "' on bean with name '" + beanName + "'or invoke fail");
+            }
+        }
     }
 
     public Object applyBeanPostProcessorsBeforeInitialization(Object bean, String beanName) {
