@@ -6,8 +6,7 @@ import com.tegasus9.spring.beans.BeanApplyPropertyValueFailException;
 import com.tegasus9.spring.beans.BeanRegisterFailException;
 import com.tegasus9.spring.beans.PropertyValue;
 import com.tegasus9.spring.beans.PropertyValues;
-import com.tegasus9.spring.beans.factory.DisposableBean;
-import com.tegasus9.spring.beans.factory.InitializingBean;
+import com.tegasus9.spring.beans.factory.*;
 import com.tegasus9.spring.beans.factory.config.AutowireCapableBeanFactory;
 import com.tegasus9.spring.beans.factory.config.BeanDefinition;
 import com.tegasus9.spring.beans.factory.config.BeanPostProcessor;
@@ -55,6 +54,18 @@ public abstract class AbstractAutowireCapableBeanFactory extends AbstractBeanFac
     }
 
     private Object initialBean(String beanName, Object bean, BeanDefinition beanDefinition) {
+        if (bean instanceof Aware){
+            if (bean instanceof BeanClassLoaderAware){
+                ((BeanClassLoaderAware) bean).setBeanClassLoader(getClassLoader());
+            }
+            if (bean instanceof BeanNameAware){
+                ((BeanNameAware) bean).setBeanName(beanName);
+            }
+            if (bean instanceof BeanFactoryAware){
+                ((BeanFactoryAware) bean).setBeanFactory(this);
+            }
+        }
+
         //处理Bean前置
         Object wrappedBean = applyBeanPostProcessorsBeforeInitialization(bean, beanName);
         //invokeInitMethods
@@ -66,7 +77,7 @@ public abstract class AbstractAutowireCapableBeanFactory extends AbstractBeanFac
     public Object applyBeanPostProcessorsAfterInitialization(Object bean, String beanName) {
         Object result = bean;
         for (BeanPostProcessor beanPostProcessor : getBeanPostProcessors()) {
-            Object current = beanPostProcessor.postProcessBeforeInitialization(result, beanName);
+            Object current = beanPostProcessor.postProcessAfterInitialization(result, beanName);
             if (current==null){
                 return result;
             }
@@ -95,7 +106,7 @@ public abstract class AbstractAutowireCapableBeanFactory extends AbstractBeanFac
     public Object applyBeanPostProcessorsBeforeInitialization(Object bean, String beanName) {
         Object result = bean;
         for (BeanPostProcessor processor : getBeanPostProcessors()) {
-            Object current = processor.postProcessAfterInitialization(result, beanName);
+            Object current = processor.postProcessBeforeInitialization(result, beanName);
             if (null == current) return result;
             result = current;
         }

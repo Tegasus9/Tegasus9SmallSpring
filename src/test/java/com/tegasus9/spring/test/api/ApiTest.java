@@ -9,8 +9,6 @@ import com.tegasus9.spring.test.common.MyBeanPostProcessor;
 import com.tegasus9.spring.test.service.UserService;
 import org.junit.Test;
 
-import java.util.LinkedList;
-
 /**
  * 博客：https://bugstack.cn - 沉淀、分享、成长，让自己和他人都能有所收获！
  * 公众号：bugstack虫洞栈
@@ -51,24 +49,9 @@ public class ApiTest {
         UserService userService = applicationContext.getBean("userService", UserService.class);
         String result = userService.queryUserInfo();
         System.out.println("测试结果：" + result);
-    }
 
-    @Test
-    public void testThreadLocal() throws InterruptedException {
-        ThreadLocal<Integer> integerThreadLocal = ThreadLocal.withInitial(()->100);
-        int a = 100;
-        int i =0;
-        LinkedList<byte[]> objects = new LinkedList<>();
-        while (true){
-            System.out.println("integerThreadLocal.get() = " + integerThreadLocal.get());
-            System.out.println("i = " + i);
-            objects.add(new byte[5 * 1024 * 1024]);
-            Thread.sleep(1);
-            if (i++>100){
-                System.gc();
-            }
-        }
-
+        System.out.println("ApplicationContextAware："+userService.getApplicationContext());
+        System.out.println("BeanFactoryAware："+userService.getBeanFactory());
     }
 
 }

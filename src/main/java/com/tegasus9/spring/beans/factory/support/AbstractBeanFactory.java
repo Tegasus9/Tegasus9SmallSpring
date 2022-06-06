@@ -5,6 +5,7 @@ import com.tegasus9.spring.beans.BeanRegisterFailException;
 import com.tegasus9.spring.beans.factory.config.BeanDefinition;
 import com.tegasus9.spring.beans.factory.config.BeanPostProcessor;
 import com.tegasus9.spring.beans.factory.config.ConfigurableBeanFactory;
+import com.tegasus9.spring.util.ClassUtil;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -15,6 +16,8 @@ import java.util.List;
  * @description
  */
 public abstract class AbstractBeanFactory extends DefaultSingletonBeanRegistry implements ConfigurableBeanFactory {
+
+    private final ClassLoader beanClassLoader = ClassUtil.getClassLoader();
 
     private final List<BeanPostProcessor> beanPostProcessors = new ArrayList<>();
 
@@ -60,5 +63,9 @@ public abstract class AbstractBeanFactory extends DefaultSingletonBeanRegistry i
      */
     public List<BeanPostProcessor> getBeanPostProcessors() {
         return this.beanPostProcessors;
+    }
+
+    public ClassLoader getClassLoader(){
+        return this.beanClassLoader;
     }
 }
