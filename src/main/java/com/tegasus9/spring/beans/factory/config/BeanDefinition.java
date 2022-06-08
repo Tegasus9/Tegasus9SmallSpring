@@ -10,6 +10,10 @@ import lombok.Data;
  */
 @Data
 public class BeanDefinition {
+
+    private static final String SCOPE_SINGLETON = ConfigurableBeanFactory.SCOPE_SINGLETON;
+
+    private static final String SCOPE_PROTOTYPE = ConfigurableBeanFactory.SCOPE_PROTOTYPE;
     private Class<?> beanClass;
     private PropertyValues propertyValues;
 
@@ -17,6 +21,25 @@ public class BeanDefinition {
 
     private String destroyMethodName;
 
+    private String scope =SCOPE_SINGLETON;
+
+    private boolean singleton = true;
+
+    private boolean prototype = false;
+
+    public void setScope(String scope) {
+        this.scope = scope;
+        this.prototype = SCOPE_PROTOTYPE.equals(scope);
+        this.singleton = SCOPE_SINGLETON.equals(scope);
+    }
+
+    public boolean isSingleton() {
+        return singleton;
+    }
+
+    public boolean isPrototype() {
+        return prototype;
+    }
     public BeanDefinition(Class<?> clazz){
         this.beanClass = clazz;
         this.propertyValues = new PropertyValues();

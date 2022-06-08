@@ -12,6 +12,7 @@ import com.tegasus9.spring.beans.factory.support.BeanDefinitionRegistry;
 import com.tegasus9.spring.core.io.Resource;
 import com.tegasus9.spring.core.io.ResourceLoader;
 import lombok.extern.log4j.Log4j2;
+import org.apache.commons.lang3.StringUtils;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
@@ -75,6 +76,7 @@ public class XmlBeanDefinitionReader extends AbstractBeanDefinitionReader {
             String className = bean.getAttribute("class");
             String initMethod = bean.getAttribute("init-method");
             String destroyMethodName = bean.getAttribute("destroy-method");
+            String scope = bean.getAttribute("scope");
 
             // 获取 Class，方便获取类中的名称
             Class<?> clazz = Class.forName(className);
@@ -84,12 +86,21 @@ public class XmlBeanDefinitionReader extends AbstractBeanDefinitionReader {
                 beanName = CharSequenceUtil.lowerFirst(clazz.getSimpleName());
             }
 
+
+
             // 定义Bean
             BeanDefinition beanDefinition = new BeanDefinition(clazz);
             beanDefinition.setInitMethodName(initMethod);
             beanDefinition.setDestroyMethodName(destroyMethodName);
+
+            if (StringUtils.isNotBlank(scope)){
+                beanDefinition.setScope(scope);
+            }
+
             // 读取属性并填充
             readPropertyAndFillBean(bean, beanDefinition);
+
+
             if (getRegistry().containsBeanDefinition(beanName)) {
                 throw new BeanNotFoundException("Duplicate beanName[" + beanName + "] is not allowed");
             }

@@ -43,11 +43,21 @@ public abstract class AbstractAutowireCapableBeanFactory extends AbstractBeanFac
         registerDisposableBeanIfNecessary(beanName, bean, beanDefinition);
 
 
-        addSingletonToMap(beanName, bean);
+        //只有单例才往单例MAP中取bean。当scope不为单例模式时，不往单例map添加bean。当getBean时。每次都先从单例map拿取，拿不到则新建返回。
+        if (beanDefinition.isSingleton()){
+            addSingletonToMap(beanName, bean);
+        }
+
         return bean;
     }
 
     protected void registerDisposableBeanIfNecessary(String beanName,Object bean,BeanDefinition beanDefinition){
+        //非singleton不执行销毁方法
+        if (!beanDefinition.isSingleton()){
+            return;
+        }
+
+
         if (bean instanceof DisposableBean || StringUtils.isNotBlank(beanDefinition.getDestroyMethodName())){
             registerDisposableBean(beanName,new DisposableBeanAdapter(bean,beanName,beanDefinition));
         }
