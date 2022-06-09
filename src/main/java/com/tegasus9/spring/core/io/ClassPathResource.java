@@ -1,7 +1,7 @@
 package com.tegasus9.spring.core.io;
 
 import cn.hutool.core.lang.Assert;
-import com.tegasus9.spring.util.ClassUtil;
+import com.tegasus9.spring.util.ClassUtils;
 
 import java.io.FileNotFoundException;
 import java.io.InputStream;
@@ -20,7 +20,7 @@ public class ClassPathResource implements Resource{
     public ClassPathResource(String path,ClassLoader classLoader){
         Assert.notNull(path,"path not be null.");
         this.path = path;
-        this.classLoader = classLoader==null? ClassUtil.getClassLoader():classLoader;
+        this.classLoader = classLoader==null? ClassUtils.getClassLoader():classLoader;
     }
 
     @Override

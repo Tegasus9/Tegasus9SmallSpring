@@ -3,7 +3,13 @@ package com.tegasus9.spring.context.support;
 import com.tegasus9.spring.beans.factory.ConfigurableListableBeanFactory;
 import com.tegasus9.spring.beans.factory.config.BeanFactoryPostProcessor;
 import com.tegasus9.spring.beans.factory.config.BeanPostProcessor;
+import com.tegasus9.spring.context.ApplicationEvent;
+import com.tegasus9.spring.context.ApplicationListener;
 import com.tegasus9.spring.context.ConfigurableApplicationContext;
+import com.tegasus9.spring.context.event.ApplicationEventMulticaster;
+import com.tegasus9.spring.context.event.ContextCloseEvent;
+import com.tegasus9.spring.context.event.ContextRefreshEvent;
+import com.tegasus9.spring.context.event.SimpleApplicationEventMulticaster;
 import com.tegasus9.spring.core.io.DefaultResourceLoader;
 
 import java.util.Map;
@@ -15,6 +21,9 @@ import java.util.Map;
  */
 public abstract class AbstractApplicationContext extends DefaultResourceLoader implements ConfigurableApplicationContext {
 
+    public static final String APPLICATION_EVENT_MULTICASTER_BEAN_NAME = "applicationEventMulticaster";
+
+    private ApplicationEventMulticaster applicationEventMulticaster;
 
     @Override
     public void refresh() {
@@ -24,15 +33,48 @@ public abstract class AbstractApplicationContext extends DefaultResourceLoader i
         //2.获取BeanFactory
         ConfigurableListableBeanFactory beanFactory = getBeanFactory();
 
-        //新增感知aware
+        // 3. 新增感知aware
         beanFactory.addBeanPostProcessor(new ApplicationContextAwareProcessor(this));
 
-        //3.在bean实例化之前，执行beanFactoryPostProcessor
+        //4.在bean实例化之前，执行beanFactoryPostProcessor
         invokeBeanFactoryPostProcessor(beanFactory);
-        //4.执行beanPostProcessor
+        //5. 执行beanPostProcessor
         registerBeanPostProcessor(beanFactory);
-        //5.提前实例化单例对象。
+
+        // 6.初始化事件发布者
+        initApplicationEventMulticaster();
+
+        // 7. 注册监听器
+        registerListeners();
+
+
+        //8..提前实例化单例对象。
         beanFactory.preInstantiateSingletons();
+
+        // 9.发布容器刷新完成事件
+        finishRefresh();
+    }
+
+    private void finishRefresh() {
+        publishEvent(new ContextRefreshEvent(this));
+    }
+
+    @Override
+    public void publishEvent(ApplicationEvent event) {
+        applicationEventMulticaster.multicastEvent(event);
+    }
+
+    private void registerListeners() {
+        Map<String, ApplicationListener> beans = getBeansOfType(ApplicationListener.class);
+        for (Map.Entry<String, ApplicationListener> listenerEntry : beans.entrySet()) {
+            applicationEventMulticaster.addApplicationListener(listenerEntry.getValue());
+        }
+    }
+
+    private void initApplicationEventMulticaster() {
+        ConfigurableListableBeanFactory beanFactory = getBeanFactory();
+        applicationEventMulticaster = new SimpleApplicationEventMulticaster(beanFactory);
+        beanFactory.registerSingleton(APPLICATION_EVENT_MULTICASTER_BEAN_NAME,applicationEventMulticaster);
     }
 
     protected abstract void refreshBeanFactory();
@@ -85,6 +127,8 @@ public abstract class AbstractApplicationContext extends DefaultResourceLoader i
 
     @Override
     public void close() {
+        publishEvent(new ContextCloseEvent(this));
+
         getBeanFactory().destroySingletons();
     }
 }

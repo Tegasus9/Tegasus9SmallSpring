@@ -45,7 +45,7 @@ public abstract class AbstractAutowireCapableBeanFactory extends AbstractBeanFac
 
         //只有单例才往单例MAP中取bean。当scope不为单例模式时，不往单例map添加bean。当getBean时。每次都先从单例map拿取，拿不到则新建返回。
         if (beanDefinition.isSingleton()){
-            addSingletonToMap(beanName, bean);
+            registerSingleton(beanName, bean);
         }
 
         return bean;

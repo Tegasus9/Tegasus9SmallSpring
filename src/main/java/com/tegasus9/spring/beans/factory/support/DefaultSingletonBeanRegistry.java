@@ -29,9 +29,11 @@ public class DefaultSingletonBeanRegistry implements SingletonBeanRegistry {
         return singletonMap.get(name);
     }
 
-    protected void addSingletonToMap(String name,Object object){
-            singletonMap.put(name,object);
+    @Override
+    public void registerSingleton(String beanName, Object singleton) {
+        singletonMap.put(beanName, singleton);
     }
+
 
     public void destroySingletons(){
         Set<String> keySet = this.disposableBeans.keySet();

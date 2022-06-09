@@ -6,7 +6,7 @@ import com.tegasus9.spring.beans.factory.FactoryBean;
 import com.tegasus9.spring.beans.factory.config.BeanDefinition;
 import com.tegasus9.spring.beans.factory.config.BeanPostProcessor;
 import com.tegasus9.spring.beans.factory.config.ConfigurableBeanFactory;
-import com.tegasus9.spring.util.ClassUtil;
+import com.tegasus9.spring.util.ClassUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -18,7 +18,7 @@ import java.util.List;
  */
 public abstract class AbstractBeanFactory extends FactoryBeanRegistrySupport implements ConfigurableBeanFactory {
 
-    private final ClassLoader beanClassLoader = ClassUtil.getClassLoader();
+    private final ClassLoader beanClassLoader = ClassUtils.getClassLoader();
 
     private final List<BeanPostProcessor> beanPostProcessors = new ArrayList<>();
 

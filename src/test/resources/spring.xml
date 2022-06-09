@@ -7,6 +7,11 @@
         <property name="location" value="深圳"/>
         <property name="userDao" ref="proxyUserDao"/>
     </bean>
+    <bean class="com.tegasus9.spring.test.event.ContextCloseEventListener"/>
+
+    <bean class="com.tegasus9.spring.test.event.ContextRefreshedEventListener"/>
+
+    <bean class="com.tegasus9.spring.test.event.CustomEventListener"/>
 
     <bean id="proxyUserDao" class="com.tegasus9.spring.test.service.ProxyBeanFactory"/>
 
